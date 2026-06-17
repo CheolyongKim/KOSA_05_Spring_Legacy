@@ -19,4 +19,5 @@
     </tr>
   </c:forEach>
 </table>
+<a href="/index.do">처음으로</a>
 </body></html>
