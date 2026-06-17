@@ -11,6 +11,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	<insert id="insert" parameterType="vo.Dept"> 
 		INSERT INTO DEPT(DEPTNO, DNAME, LOC) 
-		VALUES(#{DEPTNO}, #{DNAME}, #{LOC}) 
+		VALUES(#{deptno}, #{dname}, #{loc}) 
 	</insert>
 </mapper>
