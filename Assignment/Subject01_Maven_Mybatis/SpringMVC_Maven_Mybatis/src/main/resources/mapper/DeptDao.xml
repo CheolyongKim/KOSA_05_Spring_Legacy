@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="dao.DeptDao">
+    
+    <select id="getDept" resultType="vo.Dept"> 
+        SELECT DEPTNO, DNAME, LOC 
+        FROM DEPT 
+        ORDER BY DEPTNO ASC
+    </select>
+    
+    <select id="searchDept" resultType="vo.Dept">
+        SELECT DEPTNO, DNAME, LOC
+        FROM DEPT
+        <where>
+            <if test="keyword != null and keyword != ''">
+                <choose>
+                    <when test="searchType == 'deptno'">
+                        DEPTNO = #{keyword}
+                    </when>
+                    <when test="searchType == 'dname'">
+                        DNAME LIKE '%' || #{keyword} || '%'
+                    </when>
+                    <when test="searchType == 'loc'">
+                        LOC LIKE '%' || #{keyword} || '%'
+                    </when>
+                </choose>
+            </if>
+        </where>
+        
+        <if test="sortList != null and sortList.size() > 0">
+            ORDER BY 
+            <foreach collection="sortList" item="sortItem" separator=", ">
+                ${sortItem}
+            </foreach>
+        </if>
+        
+        <if test="sortList == null or sortList.size() == 0">
+            ORDER BY DEPTNO ASC
+        </if>
+    </select>
+
+    <insert id="insert" parameterType="vo.Dept"> 
+        INSERT INTO DEPT(DEPTNO, DNAME, LOC) 
+        VALUES(#{deptno}, #{dname}, #{loc}) 
+    </insert>
+    
+</mapper>
