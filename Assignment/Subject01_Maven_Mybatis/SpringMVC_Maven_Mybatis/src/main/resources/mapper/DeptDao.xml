@@ -1,16 +1,47 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="dao.DeptDao">
-	<select id="getDept" resultType="vo.Dept"> 
-		select DEPTNO, DNAME, LOC
-		from dept
-	</select>
-	<insert id="insert" parameterType="vo.Dept"> 
-		INSERT INTO DEPT(DEPTNO, DNAME, LOC) 
-		VALUES(#{deptno}, #{dname}, #{loc}) 
-	</insert>
+    
+    <select id="getDept" resultType="vo.Dept"> 
+        SELECT DEPTNO, DNAME, LOC
+        FROM DEPT
+        ORDER BY DEPTNO ASC
+    </select>
+    
+    <select id="searchDept" resultType="vo.Dept">
+        SELECT DEPTNO, DNAME, LOC
+        FROM DEPT
+        <where>
+            <if test="keywordList != null and keywordList.size() > 0">
+                <choose>
+                    <when test="searchType == 'deptno'">
+                        DEPTNO IN
+                        <foreach collection="keywordList" item="item" open="(" separator="," close=")">
+                            #{item}
+                        </foreach>
+                    </when>
+                    <when test="searchType == 'dname'">
+                        <foreach collection="keywordList" item="item" open="(" separator=" OR " close=")">
+                            DNAME LIKE '%' || #{item} || '%'
+                        </foreach>
+                    </when>
+                    <when test="searchType == 'loc'">
+                        <foreach collection="keywordList" item="item" open="(" separator=" OR " close=")">
+                            LOC LIKE '%' || #{item} || '%'
+                        </foreach>
+                    </when>
+                </choose>
+            </if>
+        </where>
+        ORDER BY DEPTNO ASC
+    </select>
+
+    <insert id="insert" parameterType="vo.Dept"> 
+        INSERT INTO DEPT(DEPTNO, DNAME, LOC) 
+        VALUES(#{deptno}, #{dname}, #{loc}) 
+    </insert>
+    
 </mapper>
