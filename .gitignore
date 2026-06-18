@@ -24,4 +24,8 @@ Servers/
 .DS_Store
 Thumbs.db
 
+# ETC
+.zip
+
+
 
