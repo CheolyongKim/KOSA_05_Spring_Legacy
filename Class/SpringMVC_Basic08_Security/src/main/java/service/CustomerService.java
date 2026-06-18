@@ -2,6 +2,7 @@ package service;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.security.Principal;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -86,7 +87,7 @@ public class CustomerService {
 		}
 
 	//글 쓰기 서비스
-	public String noticeReg(Notice n , HttpServletRequest request) {
+	public String noticeReg(Notice n , HttpServletRequest request , Principal principal) {
 			  
 		    String filename =n.getFile().getOriginalFilename();
 			String path = request.getServletContext().getRealPath("/customer/upload"); //배포된 서버 경로 
@@ -111,7 +112,7 @@ public class CustomerService {
 			
 			//파일명 (DTO)
 			n.setFileSrc(filename);
-			
+			n.setWriter(principal.getName()); //로그인시 사용한  사용자ID 	
 			try {
 				    NoticeDao noticeDao = sqlSession.getMapper(NoticeDao.class); //추가
 				    noticeDao.insert(n);  //DB insert
@@ -121,6 +122,26 @@ public class CustomerService {
 			} 
 			
 				
+		///////////////////////////////////////////////////////////
+		//spring security 가지고 있는 인증정보 얻어오기
+		// 로그인ID , 권한
+		//     /login 요청 처리는 spring 담당하고 처리 (인증된 사용자 정보 저장 관리)
+		
+		/*
+		SecurityContext context = SecurityContextHolder.getContext(); //모든 시큐리티 정보를 가지고 와서
+		Authentication auth= context.getAuthentication(); //인증관련된 것만 추출
+		UserDetails userinfo = (UserDetails)auth.getPrincipal();
+		
+		System.out.println("권한정보 : " + userinfo.getAuthorities()); // 인증된 사용자의 권한 정보들 
+		System.out.println("사용자ID : " + userinfo.getUsername()); // 인증된 사용자 ID
+		n.setWriter(userinfo.getUsername()); //글쓴이가 인증된 사용자 ID
+		*/
+		
+		//public String noticeReg(Notice n, HttpServletRequest request , Principal principal) 
+		//함수의 parameter :  Principal principal 인증 되면 객체 받아줍니다
+					
+		
+			
 			
 		  return "redirect:notice.do"; //요청 주소
 	}

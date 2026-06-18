@@ -73,8 +73,14 @@
    		                       default-target-url="/index.do"
    		                       authentication-failure-url="/joinus/login.do?error"  />
    		<security:logout logout-success-url="/index.do" /> 
+   		<security:intercept-url pattern="/customer/*Reg.do"     access="hasRole('ROLE_USER')"/> 
+   		<security:intercept-url pattern="/admin/**"  			access="hasRole('ROLE_ADMIN')"/>
+   		<!-- 
+   		intercept-url pattern 정규표현식을 사용해서 제어한다 
    		<security:intercept-url pattern="/customer/noticeDetail.do"  access="hasRole('ROLE_USER')"/>
-		<security:intercept-url pattern="/customer/noticeReg.do"     access="hasRole('ROLE_ADMIN')"/>
+		<security:intercept-url pattern="/customer/noticeReg.do"     access="hasRole('ROLE_ADMIN')"/> 
+		-->
+	
    </security:http>
    <security:authentication-manager>
 			<security:authentication-provider>

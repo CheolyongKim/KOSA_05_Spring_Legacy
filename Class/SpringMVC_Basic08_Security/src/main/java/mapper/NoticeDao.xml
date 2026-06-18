@@ -179,7 +179,7 @@ Mybatis 의 Mapper 작업 (APP-DB 매핑하는 작업)
 	   		</selectKey>
 	   		INSERT INTO 
 	  		NOTICES(SEQ, TITLE, CONTENT, WRITER, REGDATE, HIT, FILESRC) 
-	  		VALUES( #{seq}, #{title}, #{content}, 'kosa', SYSDATE, 0, #{fileSrc})
+	  		VALUES( #{seq}, #{title}, #{content}, #{writer}, SYSDATE, 0, #{fileSrc})
 	   </insert>
 </mapper>
 
