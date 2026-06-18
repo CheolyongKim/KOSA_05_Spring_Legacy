@@ -48,7 +48,7 @@ public class JoinController {
 	
 	//로그인 처리 (security)
 	//@GetMapping("login.do")
-	@GetMapping("login.do")
+	@GetMapping("login.do")    //   /joinus/login
 	public String login() {
 		return "joinus/login"; //view 주소
 	}
