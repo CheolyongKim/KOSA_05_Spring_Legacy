@@ -1,10 +1,12 @@
 
 package ncontroller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import dao.MemberDao;
 import lombok.RequiredArgsConstructor;
 import service.MemberService;
 import vo.Member;
@@ -48,6 +50,6 @@ public class JoinController {
 	//@GetMapping("login.do")
 	@GetMapping("login.do")
 	public String login() {
-		return "joinus/login";	// view 주소
+		return "joinus/login"; //view 주소
 	}
 }

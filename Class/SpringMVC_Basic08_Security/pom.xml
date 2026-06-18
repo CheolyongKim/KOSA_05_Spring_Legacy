@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>kr.or</groupId>
 	<artifactId>kosa</artifactId>
-	<name>SpringMVC_Basic05_Maven</name>
+	<name>SpringMVC_Basic08_Security</name>
 	<packaging>war</packaging>
 	<version>1.0.0-BUILD-SNAPSHOT</version>
 	<properties>
