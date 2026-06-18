@@ -188,7 +188,7 @@ Mybatis 의 Mapper 작업 (APP-DB 매핑하는 작업)
 	    <update id="updateOfMemberPoint">
 		  	 update member
 			 set point = nvl(point,0) + 1
-		     where userid = #{userid};    
+		     where userid = #{userid}   
   		</update>
 </mapper>
 
