@@ -10,7 +10,7 @@ public interface NoticeDao {
 	//게시물 개수
 	public int getCount(String field, String query) throws ClassNotFoundException, SQLException;
 		
-	//전체 게시물
+	//게시물 목록
 	public List<Notice> getNotices(int page, String field, String query) throws ClassNotFoundException, SQLException;
 
 	//게시물 삭제
@@ -24,4 +24,9 @@ public interface NoticeDao {
 	
 	//게시물 입력
 	public int insert(Notice n) throws ClassNotFoundException, SQLException;
+	
+	// 트랜잭션 처리 테스트 함수
+	// update 구현
+	// admin 사용자가 게시판에 글을 쓰면 member 테이블에 있는 point 컬럼을 1씩 증가
+	public int updateOfMemberPoint(String userid)throws ClassNotFoundException, SQLException;
 }

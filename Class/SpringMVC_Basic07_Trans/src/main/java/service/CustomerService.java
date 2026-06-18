@@ -10,25 +10,20 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import dao.NoticeDao;
 import vo.Notice;
 
-@Service  //@Service  > component-scan 통해서 빈으로 등록 할려는 목적 
+@Service
 public class CustomerService {
-
-	//CustomerService 는 sqlSession 에 의존
 	
 	private SqlSession sqlSession;
                  //<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
-	@Autowired   //Spring 컨테이너 안에 같은 타입의 객체가 존재하면 자동 주입
+	@Autowired   
 	public void setSqlSession(SqlSession sqlSession) {
 		this.sqlSession = sqlSession;
 	}
-	
-	//서비스 코드 (DAO) 와 모양새는 거의 같다 
-	
-	//글목록보기 서비스
 	public List<Notice> notices(String pg , String f , String q) {
 		
 		int page = 1;
@@ -50,13 +45,8 @@ public class CustomerService {
 	
 		List<Notice> list = null;
 		try {
-				// list = noticedao.getNotices(page, field, query); 기존 Dao 사용했던 코드
-			
-				// mybatis  /////////////////////////////////////////////////
 			    NoticeDao noticeDao = sqlSession.getMapper(NoticeDao.class);
-			    //마치 인터페이스를 그냥 사용하면 되는 것처럼 편하게
-			    list =  noticeDao.getNotices(page,field,query); //mapper 사용
-			    //////////////////////////////////////////////////////////////
+			    list =  noticeDao.getNotices(page,field,query);
 				
 		} catch (ClassNotFoundException e) {
 					e.printStackTrace();
@@ -66,14 +56,13 @@ public class CustomerService {
 		
 		return list;
 	}
-	//글 상세보기 서비스
 	public Notice noticesDetail(String seq) {
 			
 			Notice  notice = null;
 			
 			try {
 				 
-				 NoticeDao noticeDao = sqlSession.getMapper(NoticeDao.class); //추가
+				 NoticeDao noticeDao = sqlSession.getMapper(NoticeDao.class); //異붽�
 				 notice = noticeDao.getNotice(seq);
 			
 			} catch (ClassNotFoundException e ) {
@@ -85,11 +74,12 @@ public class CustomerService {
 			return notice;
 		}
 
-	//글 쓰기 서비스
-	public String noticeReg(Notice n , HttpServletRequest request) {
+	//+ 포인트 증가 서비스
+	@Transactional
+	public String noticeReg(Notice n , HttpServletRequest request) throws Exception {
 			  
 		    String filename =n.getFile().getOriginalFilename();
-			String path = request.getServletContext().getRealPath("/customer/upload"); //배포된 서버 경로 
+			String path = request.getServletContext().getRealPath("/customer/upload");
 			String fpath = path + "\\" + filename;
 			System.out.println(fpath);
 			
@@ -99,7 +89,6 @@ public class CustomerService {
 				     fs.write(n.getFile().getBytes());
 				     
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}finally {
 				 try {
@@ -109,29 +98,34 @@ public class CustomerService {
 				}
 			}
 			
-			//파일명 (DTO)
 			n.setFileSrc(filename);
 			
 			try {
-				    NoticeDao noticeDao = sqlSession.getMapper(NoticeDao.class); //추가
+				    NoticeDao noticeDao = sqlSession.getMapper(NoticeDao.class); 
+				    // 2개의 업무 실행
 				    noticeDao.insert(n);  //DB insert
-			
+				    // 추가
+				    noticeDao.updateOfMemberPoint("admin");	// 원칙은 session에서 저장된 userid
+				    
+				    System.out.println("정상 insert . . . 정상 update . . . 둘 다 auto commit");
 			} catch (Exception e) {
 				e.printStackTrace();
+				// 둘 중에 하나라도 문제 발생
+				throw e;
+				// 예외 발생에 대한 처리는 controller가
 			} 
 			
 				
 			
-		  return "redirect:notice.do"; //요청 주소
+		  return "redirect:notice.do"; 
 	}
 
-	//글 수정하기 서비스
 	public Notice noticeEdit(String seq) {
 			
 			Notice  notice = null;
 			
 			try {
-				  NoticeDao noticeDao = sqlSession.getMapper(NoticeDao.class); //추가
+				  NoticeDao noticeDao = sqlSession.getMapper(NoticeDao.class); //異붽�
 				  notice = noticeDao.getNotice(seq);
 				  
 			} catch (ClassNotFoundException e ) {
@@ -144,11 +138,9 @@ public class CustomerService {
 		
 		}
 
-	//글 수정하기 처리 서비스
 	public String noticeEdit(Notice n , HttpServletRequest request) {
-			  //파일 업로드 가능
 		 String filename =n.getFile().getOriginalFilename();
-		 String path = request.getServletContext().getRealPath("/customer/upload"); //배포된 서버 경로 
+		 String path = request.getServletContext().getRealPath("/customer/upload");
 		 String fpath = path + "\\" + filename;
 		 System.out.println(fpath);
 			
@@ -158,7 +150,6 @@ public class CustomerService {
 				     fs.write(n.getFile().getBytes());
 				     
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}finally {
 				 try {
@@ -167,24 +158,20 @@ public class CustomerService {
 					e.printStackTrace();
 				}
 			}
-			// 기존 파일 수정하지 않으면 (기존 파일명 ... / 대체 이미지 논리) 해결
-			//파일명 (DTO)
 			n.setFileSrc(filename);
 		
 			try {
-				     NoticeDao noticeDao = sqlSession.getMapper(NoticeDao.class); //추가
+				     NoticeDao noticeDao = sqlSession.getMapper(NoticeDao.class); 
 				     noticeDao.update(n);  //DB update
 				} catch (Exception e) {
 					e.printStackTrace();
 				} 
-		 //처리가 끝나면 상세 페이지로 : redirect  글번호를 가지고 ....
-		  return "redirect:noticeDetail.do?seq="+n.getSeq();    //서버에게 새 요청 ....
+		  return "redirect:noticeDetail.do?seq="+n.getSeq();    
 		}
 		
-	//글 삭제하기 서비스
 	public String noticeDel(String seq) {
 			
-			 NoticeDao noticeDao = sqlSession.getMapper(NoticeDao.class); //추가\
+			 NoticeDao noticeDao = sqlSession.getMapper(NoticeDao.class); 
 			 
 			 try {
 				    noticeDao.delete(seq);

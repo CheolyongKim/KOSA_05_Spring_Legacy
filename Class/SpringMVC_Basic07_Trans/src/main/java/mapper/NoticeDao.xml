@@ -181,6 +181,15 @@ Mybatis 의 Mapper 작업 (APP-DB 매핑하는 작업)
 	  		NOTICES(SEQ, TITLE, CONTENT, WRITER, REGDATE, HIT, FILESRC) 
 	  		VALUES( #{seq}, #{title}, #{content}, 'kosa', SYSDATE, 0, #{fileSrc})
 	   </insert>
+	   
+	   <!-- 
+	   	public int updateOfMemberPoint(String userid)throws ClassNotFoundException, SQLException;
+	    -->
+	    <update id="updateOfMemberPoint">
+		  	 update member
+			 set point = nvl(point,0) + 1
+		     where userid = #{userid};    
+  		</update>
 </mapper>
 
 
