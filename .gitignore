@@ -9,6 +9,10 @@
 # STS3
 .springBeans
 
+# IntelliJ IDEA
+.idea/
+*.iml
+
 # Java build output
 bin/
 target/
@@ -17,8 +21,9 @@ out/
 # Server
 Servers/
 
-# Logs
+# Spring boot
 *.log
+application-local.yml
 
 # OS files
 .DS_Store
