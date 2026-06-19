@@ -22,5 +22,10 @@ public class HomeController {
 		
 		return "home";
 	}
+
+	@RequestMapping(value = "/dept/deptList", method = RequestMethod.GET)
+	public String deptList() {
+		return "dept/deptList";
+	}
 	
 }

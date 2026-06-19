@@ -194,7 +194,7 @@
 	
 </head>
 <body>
-
+	<a href="${pageContext.request.contextPath}/dept/deptList">DEPT 페이지로 가기</a>
 	<div class="m-5">
 		<table class="table table-striped">
 			<thead>

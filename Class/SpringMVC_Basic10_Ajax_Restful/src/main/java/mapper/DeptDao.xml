@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.kosa.dao.DeptDao">
+	
+	
+		
+	<select id="findAllDept" resultType="kr.or.kosa.dto.Dept">
+		select Deptno, dname ,loc from Dept order by deptno asc
+	</select>
+	
+	<insert id="insertDept" parameterType="kr.or.kosa.dto.Dept">
+		insert into Dept(deptno,dname,loc) values(#{deptno},#{dname},#{loc})
+	</insert>	
+	
+	<select id="findDeptByDeptno" resultType="kr.or.kosa.dto.Dept">
+		select Deptno, dname ,loc from Dept where Deptno=#{deptno}
+	</select>
+	<update id="updateDept" parameterType="kr.or.kosa.dto.Dept">
+		update Dept set dname=#{dname} , loc=#{loc} where Deptno=#{deptno}
+	</update>
+	
+	<delete id="deleteDept">
+		delete from Dept where Deptno=#{deptno}
+	</delete>
+</mapper>
+	
+	
+
+
+
+
+
+
