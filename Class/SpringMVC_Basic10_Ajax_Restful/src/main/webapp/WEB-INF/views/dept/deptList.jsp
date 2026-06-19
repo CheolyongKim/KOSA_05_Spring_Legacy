@@ -225,7 +225,9 @@
 				});
 
 				if (!response.ok) {
-					throw new Error('HTTP 상태 코드: ' + response.status);
+					const msg = await response.text();
+					
+					throw new Error('HTTP 상태 코드: ' + response.status + '응답메세지: ' + msg);
 				}
 
 				resetDeptForm();

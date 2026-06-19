@@ -38,11 +38,16 @@ public class DeptController {
 				: ResponseEntity.status(HttpStatus.OK).body(deptService.getDept(deptno));
 	}
 
-	@PostMapping
+	@PostMapping(produces="text/plain; charset=UTF-8")
 	public ResponseEntity<String> insertDept(@RequestBody Dept dept) {
-		deptService.insertDept(dept);
-		// 중복같은 상황 일단 없다 침
-		return ResponseEntity.status(HttpStatus.CREATED).body("DEPT INSERT 완료됐습니다.");
+		if (deptService.getDept(dept.getDeptno()) == null) {
+			deptService.insertDept(dept);
+			return ResponseEntity.status(HttpStatus.CREATED).body("DEPT INSERT 완료됐습니다.");
+		}
+		// deptno 중복의 경우
+		else {
+			return ResponseEntity.status(HttpStatus.CONFLICT).body("Deptno 중복입니다.");
+		}
 	}
 
 	@DeleteMapping("{deptno}")
