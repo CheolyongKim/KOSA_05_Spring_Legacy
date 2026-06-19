@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans  xmlns="http://www.springframework.org/schema/beans"
+	    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	    xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	                        http://www.springframework.org/schema/beans/spring-beans.xsd">
+<!-- 
+	객체의 생성과 조립(주입) 담당 > 순수한 자바 (xml과 동일한 역할)
+	
+	Spring Legacy에서는 
+		객체의 생성과 조립을 xml 파일 및 Bean 요소로 한다.
+		@Configuration 설정 활용, 자바의 함수를 통해서 객체 생성
+		
+	1단계: new가 있는 자원은 모두 bean객체로 생성
+			사용자가 만들지 않고 Java API가 제공하는 객체는?
+			xml 설정에서 자동 지원
+			예) <list>, <map>, <set>, ...
+ -->
+<!-- 
+<bean id="encFilter" class="DI_07_Spring.EncFilter"></bean>
+<bean id="zipFilter" class="DI_07_Spring.ZipFilter"></bean>
+<bean id="headerFilter" class="DI_07_Spring.HeaderFilter"></bean>
+<bean id="protocolHandler" class="DI_07_Spring.ProtocolHandler">
+	<property name="filters">
+		<list>
+			<ref bean="encFilter"/>
+			<ref bean="zipFilter"/>
+			<ref bean="headerFilter"/>
+		</list>
+	</property>
+</bean>
+-->
+<bean id="protocolHandler" class="DI_07_Spring.ProtocolHandler">
+	<property name="filters">
+		<list>
+			<bean class="DI_07_Spring.EncFilter"/>
+			<bean class="DI_07_Spring.ZipFilter"/>
+			<bean class="DI_07_Spring.HeaderFilter"/>
+		</list>
+	</property>
+</bean>
+</beans>

@@ -1,0 +1,32 @@
+Spring MVC Pattern
+
+- Model
+	- DTO
+	- DAO
+	- Service
+- View
+	- JSP
+	- EL/JSTL
+	- Thymeleaf: (server-side)Script based template (.html)
+- Controller
+	- Servlet
+	
+// 의존 화살표
+// 데이터 전송 과정에서 DTO들이 전달됨
+Controller -> Service -> DAO -> DB -> Service -> Controller -> View -> Forward -> Client
+
+1. Requirement
+- DB: Oracle, MySQL
+	```
+	CREATE TABLE ARTICLE ...
+	```
+	
+	- 이렇게 DB 테이블이 주어졌을 때
+		-> DTO 생성 -> DAO 생성 -> Service 생성 -> ...
+
+- SQL 작업은 DB에 관계없이 동일 함수를 통해 DML을 실행한다.
+	- OracleDAO, MysqlDAO 만들어야겠다.
+		- 추상 클래스 DAO를 만든다.
+		- 인터페이스 DAO를 만든다.	
+			- 둘 다 구현을 강제하지만 Spring은 interface가 더 적절하다.
+	- ArticleDAO라는, CRUD함수가 정의된 interface를 만들어야겠다.

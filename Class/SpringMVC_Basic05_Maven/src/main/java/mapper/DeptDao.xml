@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--  
+	public Member getMember(String userid) throws ClassNotFoundException, SQLException;
+	public int insert(Member member) throws ClassNotFoundException, SQLException;
+-->
+
+<mapper namespace="dao.DeptDao">
+	<select id="getDept">
+		select deptno, dname, loc
+        from dept where deptno=#{deptno}
+	</select>
+	<insert id="insert" parameterType="vo.Dept">
+		INSERT INTO DEPT(DEPTNO, DNAME, LOC)
+        VALUES(#{DEPTNO}, #{DNAME}, #{LOC})
+	</insert>
+</mapper>
+
+
+
+

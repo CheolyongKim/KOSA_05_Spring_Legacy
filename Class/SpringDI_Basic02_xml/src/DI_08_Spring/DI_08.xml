@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans  xmlns="http://www.springframework.org/schema/beans"
+	    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	    xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	                        http://www.springframework.org/schema/beans/spring-beans.xsd">
+<!-- 
+	객체의 생성과 조립(주입) 담당 > 순수한 자바 (xml과 동일한 역할)
+	
+	Spring Legacy에서는 
+		객체의 생성과 조립을 xml 파일 및 Bean 요소로 한다.
+		@Configuration 설정 활용, 자바의 함수를 통해서 객체 생성
+		
+	1단계: new가 있는 자원은 모두 bean객체로 생성
+			사용자가 만들지 않고 Java API가 제공하는 객체는?
+			xml 설정에서 자동 지원
+			예) <list>, <map>, <set>, ...
+			
+		JobExecute jobExecute = new JobExecute("hong", 100);
+		JobExecute jobExecute2 = new JobExecute("kim", 100L);
+		JobExecute jobExecute3 = new JobExecute("park", "kim");
+		
+		xml 객체 생성: 타입을 지정해서 사용 가능
+		
+		ArticleDAO articleDAO = new ArticleDAO();
+		jobExecute.setArticleDao(articleDAO);
+		jobExecute.setData(500);
+ -->
+<bean id="articleDAO" class="DI_08_Spring.ArticleDAO"></bean>
+<bean id="jobExecute" class="DI_08_Spring.JobExecute">
+	<constructor-arg>
+		<value>hong</value>
+	</constructor-arg>
+	<constructor-arg>
+		<value type="long">100</value>
+	</constructor-arg>
+	<property name="articleDAO">
+		<ref bean="articleDAO"/>
+	</property>
+	<property name="data">
+		<value>500</value>
+	</property>
+</bean>
+</beans>

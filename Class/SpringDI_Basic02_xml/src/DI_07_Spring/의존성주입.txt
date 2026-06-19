@@ -1,0 +1,9 @@
+Spring DI
+
+1. Constructor Injection
+2. Setter Injection
+
+주입하는 것
+1. Value
+2. Object(Bean): <ref bean=""/>
+3. Object(Java API): Collection, ...
