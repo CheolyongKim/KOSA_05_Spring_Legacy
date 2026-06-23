@@ -82,6 +82,7 @@
 		-->
 	
    </security:http>
+   <!-- 
    <security:authentication-manager>
 			<security:authentication-provider>
 					<security:user-service>
@@ -89,7 +90,23 @@
 						<security:user name="admin" password="1004" authorities="ROLE_USER,ROLE_ADMIN"/>
 					</security:user-service>
 			</security:authentication-provider>
-	</security:authentication-manager>   
+	</security:authentication-manager>
+	 -->   
+	<security:authentication-manager>
+		<security:authentication-provider>
+			<security:jdbc-user-service data-source-ref="driverManagerDataSource"
+				 users-by-username-query="
+				 	SELECT USERID, PWD AS PASSWORD, 1 ENABLED
+				 	FROM MEMBER WHERE USERID=?
+				 "
+				 authorities-by-username-query="
+				 	SELECT M.USERID, R.ROLE_NAME
+				 	FROM MEMBER M JOIN ROLL R ON M.USERID=R.USERID
+				 	WHERE M.USERID=?
+				 "
+			/>
+		</security:authentication-provider>
+	</security:authentication-manager>
 	
 	<!--  
 	<form name='f' action='/login' method='POST'>
