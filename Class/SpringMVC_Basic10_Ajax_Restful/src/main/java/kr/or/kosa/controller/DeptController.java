@@ -56,8 +56,8 @@ public class DeptController {
 		return ResponseEntity.status(HttpStatus.OK).body("DEPT DELETE 완료됐습니다.");
 	}
 
-	@PutMapping("{deptno}")
-	public ResponseEntity<String> updateDept(@PathVariable int deptno, @RequestBody Dept dept) {
+	@PutMapping
+	public ResponseEntity<String> updateDept(@RequestBody Dept dept) {
 	    deptService.updateDept(dept);
 		return ResponseEntity
 				.status(HttpStatus.OK)

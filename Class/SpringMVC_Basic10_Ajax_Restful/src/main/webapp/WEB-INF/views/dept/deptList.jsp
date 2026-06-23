@@ -212,7 +212,7 @@
 			event.preventDefault();
 
 			const dept = getDeptFormData();
-			const url = updateMode ? contextPath + '/dept/' + dept.deptno : contextPath + '/dept';
+			const url = updateMode ? contextPath + '/dept' : contextPath + '/dept';
 			const method = updateMode ? 'PUT' : 'POST';
 
 			try {
